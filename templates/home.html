@@ -1,15 +1,21 @@
-<!-- templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDSS Galaxy Classifier</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="center-screen">
-    <h1>Galaxy Classification</h1>
-    <form action="/input">
-        <button type="submit">Start Classification</button>
-    </form>
+<body>
+    <div class="center-screen">
+        <h1>Galaxy Classification</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; line-height: 1.6;">
+            Explore the cosmos with our advanced AI-powered galaxy classifier. 
+            Upload an image and discover the mysteries of distant galaxies.
+        </p>
+        <form action="/input">
+            <button type="submit">🚀 Start Classification</button>
+        </form>
+    </div>
 </body>
 </html>
