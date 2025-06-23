@@ -1,16 +1,81 @@
-<!-- templates/input.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Galaxy Image</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="center-screen">
-    <h1>Upload Galaxy Image</h1>
-    <form action="/predict" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
-        <button type="submit">Classify</button>
-    </form>
+<body>
+    <body>
+    <div class="center-screen">
+        <h1>Upload Galaxy Image</h1>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem; max-width: 500px; line-height: 1.5;">
+            Select a galaxy image to analyze its morphological classification
+        </p>
+        
+        <form id="classifyForm" action="/predict" method="post" enctype="multipart/form-data">
+            <!-- Drag and Drop Upload Box -->
+            <div id="uploadBox" class="upload-box">
+                <div class="upload-content">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <div class="upload-main-text">Drop your galaxy image here</div>
+                        <div class="upload-sub-text">or click to browse</div>
+                    </div>
+                </div>
+                <input type="file" name="file" id="fileInput" accept=".png, .jpg, .jpeg" required>
+            </div>
+            
+            <div id="fileName" style="margin: 15px 0; font-size: 1rem; color: #bb86fc;"></div>
+            
+            <!-- Smaller Upload Button Below -->
+            <button type="submit" id="classifyBtn" class="classify-btn">🔬 Classify Galaxy</button>
+        </form>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="galaxy-spinner">
+                <div class="galaxy-ring"></div>
+                <div class="galaxy-ring"></div>
+                <div class="galaxy-ring"></div>
+                <div class="galaxy-ring"></div>
+            </div>
+            <div class="loading-text">Analyzing Galaxy...</div>
+            <div class="loading-subtext">Model is processing your cosmic image</div>
+        </div>
+    </div>
+
+    <script>
+        // Show selected file name
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const fileNameDiv = document.getElementById('fileName');
+            if (fileName) {
+                fileNameDiv.textContent = `Selected: ${fileName}`;
+                fileNameDiv.style.color = '#64ffda';
+            } else {
+                fileNameDiv.textContent = '';
+            }
+        });
+
+        // Show loading animation on form submit
+        document.getElementById('classifyForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent immediate form submission
+            
+            if (fileInput.files.length > 0) {
+                // Show loading overlay
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                // Wait 3 seconds then submit the form
+                setTimeout(() => {
+                    // Actually submit the form after 3 seconds
+                    e.target.submit();
+                }, 2500);
+            }
+        });
+    </script>
 </body>
 </html>
