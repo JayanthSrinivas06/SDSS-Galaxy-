@@ -1,16 +1,39 @@
-<!-- templates/output.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galaxy Classification Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="center-screen">
-    <h1>Prediction Result</h1>
-    <img src="{{ image_path }}" alt="Uploaded Image" class="preview">
-    <h2>Predicted Class: {{ label }}</h2>
-    <p>Confidence: {{ confidence }}%</p>
-    <a href="/">Back to Home</a>
+<body>
+    <div class="center-screen">
+        <h1>Classification Complete</h1>
+        
+        <img src="{{ image_path }}" alt="Analyzed Galaxy" class="preview">
+        
+        <div class="prediction-result">
+            <h2>🌌 {{ label }}</h2>
+            <p style="font-size: 1.5rem; margin: 20px 0;">
+                <strong>Confidence:</strong> {{ confidence }}%
+            </p>
+            
+            <div style="margin-top: 25px; font-size: 1rem; line-height: 1.6; max-width: 500px;">
+                {% if label == 'Cigar-shaped smooth' %}
+                    <p style="color: #64ffda;">This galaxy exhibits an elongated, cigar-like morphology with smooth features and no visible spiral structure.</p>
+                {% elif label == 'In between smooth' %}
+                    <p style="color: #64ffda;">This galaxy shows characteristics between smooth elliptical and more structured forms.</p>
+                {% elif label == 'completely round smooth' %}
+                    <p style="color: #64ffda;">This is a smooth, round elliptical galaxy with no visible spiral arms or disk structure.</p>
+                {% elif label == 'edge-on' %}
+                    <p style="color: #64ffda;">This galaxy is viewed edge-on, showing its disk structure from the side with a prominent dust lane.</p>
+                {% elif label == 'spiral' %}
+                    <p style="color: #64ffda;">This galaxy displays beautiful spiral arms extending from a central bulge, characteristic of spiral galaxies.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <a href="/">🏠 Analyze Another Galaxy</a>
+    </div>
 </body>
 </html>
