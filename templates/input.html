@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Galaxy Classification - Upload Image</title>
 </head>
 <body>
@@ -17,9 +17,9 @@
                 <h2>SDSS Galaxy</h2>
             </div>
             <ul class="nav-links">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="input.html" class="active">Classify</a></li>
-                <li><a href="output.html">Results</a></li>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('input_page') }}" class="active">Classify</a></li>
+                <li><a href="{{ url_for('output_page') }}">Results</a></li>
             </ul>
         </nav>
     </header>
@@ -31,7 +31,17 @@
                     <h1 class="section-title">Galaxy Image Classification</h1>
                     <p class="upload-subtitle">Upload a galaxy image to classify its type using our advanced machine learning model</p>
                     
-                    <form class="upload-form" action="output.html" method="post" enctype="multipart/form-data">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for message in messages %}
+                                    <div class="flash-message">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form class="upload-form" action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
                         <div class="upload-area" id="uploadArea">
                             <div class="upload-content">
                                 <div class="upload-icon">🌌</div>
@@ -167,19 +177,12 @@
 
         // Handle form submission
         document.querySelector('.upload-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
             const btnText = document.querySelector('.btn-text');
             const btnLoading = document.querySelector('.btn-loading');
             
             btnText.style.display = 'none';
             btnLoading.style.display = 'flex';
             classifyBtn.disabled = true;
-            
-            // Simulate processing time
-            setTimeout(() => {
-                window.location.href = 'output.html';
-            }, 2000);
         });
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>SDSS Galaxy Classification</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
                 <h1 class="hero-title">Galaxy Classification System</h1>
                 <p class="hero-subtitle">Explore the cosmos through advanced machine learning and discover the mysteries of distant galaxies</p>
                 <div class="hero-buttons">
-                    <a href="input.html" class="btn btn-primary">Start Classification</a>
+                    <a href="{{ url_for('input_page') }}" class="btn btn-primary">Start Classification</a>
                 </div>
             </div>
             <div class="hero-visual">

@@ -13,6 +13,21 @@ body {
     position: relative;
 }
 
+/* Flash Messages */
+.flash-messages {
+    margin-bottom: 2rem;
+}
+
+.flash-message {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
 /* Animated starfield background */
 .stars, .stars2, .stars3 {
     position: fixed;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Galaxy Classification - Results</title>
 </head>
 <body>
@@ -17,9 +17,9 @@
                 <h2>SDSS Galaxy</h2>
             </div>
             <ul class="nav-links">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="input.html">Classify</a></li>
-                <li><a href="output.html" class="active">Results</a></li>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('input_page') }}">Classify</a></li>
+                <li><a href="{{ url_for('output_page') }}" class="active">Results</a></li>
             </ul>
         </nav>
     </header>
@@ -33,7 +33,11 @@
                     <div class="results-grid">
                         <div class="image-display">
                             <div class="uploaded-image">
-                                <img src="https://images.pexels.com/photos/2150/sky-space-dark-galaxy.jpg?auto=compress&cs=tinysrgb&w=800" alt="Uploaded Galaxy" id="resultImage">
+                                {% if uploaded_image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" alt="Uploaded Galaxy" id="resultImage">
+                                {% else %}
+                                    <img src="https://images.pexels.com/photos/2150/sky-space-dark-galaxy.jpg?auto=compress&cs=tinysrgb&w=800" alt="Sample Galaxy" id="resultImage">
+                                {% endif %}
                                 <div class="image-overlay">
                                     <span class="image-label">Analyzed Image</span>
                                 </div>
@@ -99,10 +103,10 @@
                             <div class="analysis-card">
                                 <h4>Technical Details</h4>
                                 <ul class="feature-list">
-                                    <li><span class="feature-name">Model Used:</span> <span class="feature-value">CNN v2.0</span></li>
+                                    <li><span class="feature-name">Model Used:</span> <span class="feature-value">{{ selected_model or 'CNN v2.0' }}</span></li>
                                     <li><span class="feature-name">Processing Time:</span> <span class="feature-value">1.23 seconds</span></li>
                                     <li><span class="feature-name">Image Resolution:</span> <span class="feature-value">1024x1024 px</span></li>
-                                    <li><span class="feature-name">Color Channels:</span> <span class="feature-value">RGB (3 channels)</span></li>
+                                    <li><span class="feature-name">Confidence Threshold:</span> <span class="feature-value">{{ (confidence_threshold|float * 100)|round|int }}%</span></li>
                                 </ul>
                             </div>
                             
@@ -119,7 +123,7 @@
                     </div>
                     
                     <div class="action-buttons">
-                        <a href="input.html" class="btn btn-primary">Classify Another Image</a>
+                        <a href="{{ url_for('input_page') }}" class="btn btn-primary">Classify Another Image</a>
                         <button class="btn btn-secondary" onclick="downloadResults()">Download Results</button>
                         <button class="btn btn-secondary" onclick="shareResults()">Share Results</button>
                     </div>
@@ -156,10 +160,10 @@ Morphological Features:
 - Star Formation: Active in arms
 
 Technical Details:
-- Model Used: CNN v2.0
+- Model Used: {{ selected_model or 'CNN v2.0' }}
 - Processing Time: 1.23 seconds
 - Image Resolution: 1024x1024 px
-- Color Channels: RGB (3 channels)
+- Confidence Threshold: {{ (confidence_threshold|float * 100)|round|int }}%
 
 Physical Properties:
 - Estimated Mass: ~10¹¹ M☉
