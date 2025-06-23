@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Galaxy Classification - Upload Image</title>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <h2>SDSS Galaxy</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="input.html" class="active">Classify</a></li>
+                <li><a href="output.html">Results</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="upload-section">
+            <div class="container">
+                <div class="upload-container">
+                    <h1 class="section-title">Galaxy Image Classification</h1>
+                    <p class="upload-subtitle">Upload a galaxy image to classify its type using our advanced machine learning model</p>
+                    
+                    <form class="upload-form" action="output.html" method="post" enctype="multipart/form-data">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <div class="upload-icon">🌌</div>
+                                <h3>Drop your galaxy image here</h3>
+                                <p>or click to browse files</p>
+                                <input type="file" id="imageInput" name="galaxy_image" accept="image/*" required>
+                            </div>
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview">
+                                <div class="image-info">
+                                    <p id="fileName"></p>
+                                    <p id="fileSize"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-options">
+                            <div class="option-group">
+                                <label for="confidence">Confidence Threshold:</label>
+                                <select id="confidence" name="confidence">
+                                    <option value="0.7">70% (Recommended)</option>
+                                    <option value="0.8">80% (High Precision)</option>
+                                    <option value="0.6">60% (More Sensitive)</option>
+                                    <option value="0.9">90% (Very High Precision)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="option-group">
+                                <label for="model">Classification Model:</label>
+                                <select id="model" name="model">
+                                    <option value="cnn_v2">CNN v2.0 (Latest)</option>
+                                    <option value="resnet50">ResNet-50</option>
+                                    <option value="vgg16">VGG-16</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary classify-btn" id="classifyBtn" disabled>
+                            <span class="btn-text">Classify Galaxy</span>
+                            <span class="btn-loading" style="display: none;">
+                                <div class="spinner"></div>
+                                Processing...
+                            </span>
+                        </button>
+                    </form>
+                    
+                    <div class="supported-formats">
+                        <h4>Supported Formats</h4>
+                        <div class="format-tags">
+                            <span class="format-tag">JPEG</span>
+                            <span class="format-tag">PNG</span>
+                            <span class="format-tag">TIFF</span>
+                            <span class="format-tag">BMP</span>
+                            <span class="format-tag">WEBP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Jayanth Srinivas Bommisetty. Exploring the cosmos through data.</p>
+        </div>
+    </footer>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const classifyBtn = document.getElementById('classifyBtn');
+        const uploadContent = uploadArea.querySelector('.upload-content');
+
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // Handle click to upload
+        uploadArea.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    
+                    uploadContent.style.display = 'none';
+                    imagePreview.style.display = 'block';
+                    classifyBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a valid image file.');
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Handle form submission
+        document.querySelector('.upload-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const btnText = document.querySelector('.btn-text');
+            const btnLoading = document.querySelector('.btn-loading');
+            
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'flex';
+            classifyBtn.disabled = true;
+            
+            // Simulate processing time
+            setTimeout(() => {
+                window.location.href = 'output.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
