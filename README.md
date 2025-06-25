@@ -37,7 +37,7 @@ This project is a Flask-based web application that uses a Convolutional Neural N
 ## 📦 Dataset Preparation
 
 Download the dataset from Kaggle:  
-🔗 [Galaxy Zoo - The Galaxy Classification Dataset](https://www.kaggle.com/datasets)
+🔗 [The Galaxy Classification Dataset](https://www.kaggle.com/datasets)
 
 - Ensure your dataset contains **exactly 5 classes** corresponding to:
   - `Cigar-shaped smooth`
