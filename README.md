@@ -128,7 +128,7 @@ You’ll be taken to the home page with a “Start Classification” button.
 ## ❗ Notes
 
 - Only image files (`.jpg`, `.jpeg`, `.png`) are supported.
-- The model input size used in preprocessing (e.g., `(150, 150)`) must match what was used during training.
+- The model input size used in preprocessing (e.g., `(256, 256)`) must match what was used during training.
 - The app assumes classification into exactly 5 galaxy types.
 
 ---
